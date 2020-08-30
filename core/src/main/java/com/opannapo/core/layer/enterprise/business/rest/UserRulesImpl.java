@@ -1,8 +1,14 @@
 package com.opannapo.core.layer.enterprise.business.rest;
 
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.opannapo.core.layer.application.domain.User;
 import com.opannapo.core.layer.enterprise.business.rest.callbacks.EndpointGetManyCallback;
+import com.opannapo.core.layer.enterprise.business.rest.callbacks.EndpointGetOneCallback;
 import com.opannapo.core.layer.enterprise.business.rest.endpoints.UserEndpoint;
+import com.opannapo.core.layer.enterprise.utils.Log;
 import com.opannapo.core.layer.interfaces.rest.UserRules;
 
 import retrofit2.Call;
@@ -12,20 +18,36 @@ import retrofit2.Response;
 /**
  * Created by napouser on 30,August,2020
  */
-public class UserRulesImpl implements UserRules<JsonObject> {
+public class UserRulesImpl implements UserRules<User> {
     UserEndpoint endpoint;
+
+    Gson gson = new GsonBuilder()
+            .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+            .create();
 
     public UserRulesImpl() {
         endpoint = ApiClient.getClient().create(UserEndpoint.class);
     }
 
     @Override
-    public void getAll(final EndpointGetManyCallback<JsonObject> callback) {
+    public void getAll(final EndpointGetManyCallback<User> callback) {
         callback.onProgress("Loading");
-        endpoint.getAll().enqueue(new Callback<JsonObject>() {
+
+    }
+
+    @Override
+    public void getAll(int page, EndpointGetManyCallback<User> callback) {
+
+    }
+
+    @Override
+    public void getOne(int id, EndpointGetOneCallback<User> callback) {
+        endpoint.getAuthor(18698574).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                callback.onComplete(true, response.body(), null);
+                User author = gson.fromJson(response.body(), User.class);
+                Log.d("AUTHOR : " + author.toString());
+                callback.onComplete(true, author, null);
             }
 
             @Override
@@ -35,8 +57,4 @@ public class UserRulesImpl implements UserRules<JsonObject> {
         });
     }
 
-    @Override
-    public void getAll(int page, EndpointGetManyCallback<JsonObject> callback) {
-
-    }
 }

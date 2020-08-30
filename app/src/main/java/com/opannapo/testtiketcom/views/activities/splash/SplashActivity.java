@@ -1,5 +1,6 @@
 package com.opannapo.testtiketcom.views.activities.splash;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -9,6 +10,7 @@ import androidx.lifecycle.Observer;
 
 import com.opannapo.core.layer.application.presenter.view.BaseActivity;
 import com.opannapo.testtiketcom.R;
+import com.opannapo.testtiketcom.views.activities.main.MainActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,8 +53,8 @@ public class SplashActivity extends BaseActivity<SplashVM> {
     final Observer<Integer> liveLoadingState = data -> {
         progressBar.setVisibility(data == 1 ? View.VISIBLE : View.GONE);
         if (data == 0) {
-            //startActivity(new Intent(this, SplashActivity.class));
-            //finish();
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
         }
     };
 
