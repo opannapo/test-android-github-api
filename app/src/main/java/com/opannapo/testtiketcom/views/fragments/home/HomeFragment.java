@@ -35,6 +35,8 @@ public class HomeFragment extends BaseFragment<HomeVM> {
     @BindView(R.id.edtSearch)
     EditText edtSearch;
 
+    private String queryMatch;
+
     @Override
     protected Class<HomeVM> initVM() {
         return HomeVM.class;
@@ -51,13 +53,15 @@ public class HomeFragment extends BaseFragment<HomeVM> {
         vm.liveUsers.observe(this, liveUsers);
         vm.liveLoadingState.observe(this, liveLoadingState);
 
+
         edtSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm != null) imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 
                 if (v.getText().toString().isEmpty()) return true;
-                vm.findUsers(requireContext(), v.getText().toString());
+                queryMatch = v.getText().toString();
+                vm.findUsers(requireContext(), queryMatch);
                 return true;
             }
             return false;
@@ -80,7 +84,7 @@ public class HomeFragment extends BaseFragment<HomeVM> {
             for (User user : data) {
                 try {
                     Log.d("live liveUsers user " + user);
-                    requireActivity().runOnUiThread(() -> adapter.notifyAddMoreData(user));
+                    requireActivity().runOnUiThread(() -> adapter.notifyAddMoreData(user, queryMatch));
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();

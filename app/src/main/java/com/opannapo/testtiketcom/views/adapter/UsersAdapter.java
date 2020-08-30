@@ -1,6 +1,7 @@
 package com.opannapo.testtiketcom.views.adapter;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private List<User> data;
     private OnItemClicklListener listener;
     private Context context;
+    private String queryMatch;
 
     private static final int VIEW_TYPE_ITEM_ODD = 1;
     private static final int VIEW_TYPE_ITEM_EVEN = 2;
@@ -78,7 +80,9 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         void bind(final User u, final OnItemClicklListener listener) {
             Log.d("adapter live liveUsers user " + u);
-            txtName.setText(u.getName());
+            String name = u.getLogin();
+            String nameOut = name.replace(queryMatch, "<b>" + queryMatch + "</b>");
+            txtName.setText(Html.fromHtml(nameOut));
             Glide.with(context)
                     .load(u.getAvatarUrl())
                     .centerCrop()
@@ -106,7 +110,9 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
 
         void bind(final User u, final OnItemClicklListener listener) {
-            txtName.setText(u.getName());
+            String name = u.getLogin();
+            String nameOut = name.replace(queryMatch, "<b>" + queryMatch + "</b>");
+            txtName.setText(Html.fromHtml(nameOut));
             Glide.with(context)
                     .load(u.getAvatarUrl())
                     .centerCrop()
@@ -127,12 +133,14 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         notifyItemChanged(getItemCount() - 1);
     }
 
-    public void notifyAddMoreData(List<User> data) {
+    public void notifyAddMoreData(List<User> data, String queryMatch) {
+        this.queryMatch = queryMatch;
         this.data.addAll(data);
         this.notifyItemInserted(getItemCount() - 1);
     }
 
-    public void notifyAddMoreData(User data) {
+    public void notifyAddMoreData(User data, String queryMatch) {
+        this.queryMatch = queryMatch;
         this.data.add(data);
         this.notifyItemInserted(getItemCount() - 1);
     }
