@@ -62,8 +62,8 @@ public class HomeVM extends BaseViewModel<HomeUseCaseImpl> implements HomeUseCas
 
     @Override
     public void onSearchError(@ErrorType int errorType) {
-        liveErrorType.postValue(errorType);
         liveLoadingState.postValue(0);
+        liveErrorType.postValue(errorType);
         isProcessing = false;
     }
 }
