@@ -9,6 +9,7 @@ public class LogConfig {
     private boolean isLogEnable;
     public boolean isWithDetailLine;
     public boolean isWithDetailCaller;
+    public String TAG_ADDITION;
 
 
     public boolean isLogEnable() {
