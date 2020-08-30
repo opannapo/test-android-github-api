@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import com.opannapo.core.layer.application.domain.User;
 import com.opannapo.core.layer.application.presenter.view.BaseFragment;
 import com.opannapo.core.layer.enterprise.utils.Log;
 import com.opannapo.testtiketcom.R;
+import com.opannapo.testtiketcom.etc.Constant.ErrorType;
 import com.opannapo.testtiketcom.views.adapter.UsersAdapter;
 
 import java.util.ArrayList;
@@ -31,11 +33,12 @@ import butterknife.ButterKnife;
 public class HomeFragment extends BaseFragment<HomeVM> {
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
-
-    UsersAdapter adapter;
     @BindView(R.id.edtSearch)
     EditText edtSearch;
+    @BindView(R.id.imgNoResult)
+    ImageView imgNoResult;
 
+    UsersAdapter adapter;
     private String queryMatch;
 
     @Override
@@ -53,6 +56,7 @@ public class HomeFragment extends BaseFragment<HomeVM> {
         ButterKnife.bind(this, view);
         vm.liveUsers.observe(this, liveUsers);
         vm.liveLoadingState.observe(this, liveLoadingState);
+        vm.liveErrorType.observe(this, liveErrorType);
 
 
         edtSearch.setOnEditorActionListener((v, actionId, event) -> {
@@ -88,7 +92,7 @@ public class HomeFragment extends BaseFragment<HomeVM> {
                 int totalItemCount = layoutManager.getItemCount();
                 int pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
                 if (pastVisibleItems + visibleItemCount >= totalItemCount) {
-                    vm.loadMore(requireContext());
+                    if (!adapter.isNoMoreData()) vm.loadMore(requireContext());
                 }
             }
         });
@@ -100,11 +104,32 @@ public class HomeFragment extends BaseFragment<HomeVM> {
     }
 
     final Observer<List<User>> liveUsers = data -> {
-        //requireActivity().runOnUiThread(() -> adapter.notifyAddMoreData(user, queryMatch));
+        Log.d("live liveUsers " + data);
+        imgNoResult.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+        if (data == null) {
+            requireActivity().runOnUiThread(() -> adapter.notifyToReset());
+            return;
+        }
         requireActivity().runOnUiThread(() -> adapter.notifyAddMoreData(data, queryMatch));
     };
 
     final Observer<Integer> liveLoadingState = data -> {
         Log.d("live liveLoadingState " + data);
+        imgNoResult.setVisibility(View.GONE);
+    };
+
+    final Observer<Integer> liveErrorType = data -> {
+        Log.d("live liveErrorType " + data);
+        if (data == ErrorType.EMPTY_RESULT) {
+            if (adapter.getItemCount() > 1) { //++footer loading more
+                Log.d("live liveErrorType adapter.getItemCount() > 1 " + adapter.getItemCount());
+                adapter.notifyNoMoreData();
+            } else {
+                Log.d("live liveErrorType adapter.getItemCount() ! > 1 " + adapter.getItemCount());
+                imgNoResult.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+            }
+        }
     };
 }

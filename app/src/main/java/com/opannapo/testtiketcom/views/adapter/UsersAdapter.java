@@ -30,6 +30,7 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private OnItemClicklListener listener;
     private Context context;
     private String queryMatch;
+
     private boolean isNoMoreData;
 
     private static final int VIEW_TYPE_ITEM = 1;
@@ -83,7 +84,7 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
 
         void bind(final User u, final OnItemClicklListener listener) {
-            String name = u.getLogin();
+            String name = u.getLogin().toLowerCase();
             String nameOut = name.replace(queryMatch, "<b>" + queryMatch + "</b>");
             txtName.setText(Html.fromHtml(nameOut));
             Glide.with(context)
@@ -127,13 +128,13 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
 
     public void notifyAddMoreData(List<User> data, String queryMatch) {
-        this.queryMatch = queryMatch;
+        this.queryMatch = queryMatch.toLowerCase();
         this.data.addAll(data);
         this.notifyItemInserted(getItemCount() - 1);
     }
 
     public void notifyAddMoreData(User data, String queryMatch) {
-        this.queryMatch = queryMatch;
+        this.queryMatch = queryMatch.toLowerCase();
         this.data.add(data);
         this.notifyItemInserted(getItemCount() - 1);
     }
@@ -141,6 +142,18 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void notifyNoMoreData() {
         isNoMoreData = true;
         notifyItemChanged(getItemCount() - 1);
+    }
+
+    public void notifyToReset() {
+        this.data.clear();
+        this.isNoMoreData = false;
+        this.queryMatch = "";
+        this.notifyDataSetChanged();
+    }
+
+
+    public boolean isNoMoreData() {
+        return isNoMoreData;
     }
 
     public interface OnItemClicklListener {

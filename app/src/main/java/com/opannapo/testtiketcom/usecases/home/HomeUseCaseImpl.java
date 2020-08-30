@@ -46,10 +46,9 @@ public class HomeUseCaseImpl extends BaseUseCase<HomeUseCase.View> implements Ho
 
                     if (data.size() > 0) {
                         view.onUsersResult(data);
-                        return;
+                    } else {
+                        view.onSearchError(Constant.ErrorType.EMPTY_RESULT);
                     }
-
-                    view.onSearchError(Constant.ErrorType.ERROR_LOAD);
                 } else {
                     view.onSearchError(Constant.ErrorType.ERROR_LOAD);
                 }

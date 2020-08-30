@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="#EEEEEE">
 
+
     <RelativeLayout
         android:id="@+id/laySearch"
         android:layout_width="match_parent"
@@ -59,4 +60,14 @@
         tools:listitem="@layout/view_item_user" />
 
 
+    <ImageView
+        android:id="@+id/imgNoResult"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/ic_empty_search"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/laySearch" />
 </androidx.constraintlayout.widget.ConstraintLayout>

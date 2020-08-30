@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.opannapo.core.layer.application.domain.User;
 import com.opannapo.core.layer.application.presenter.view.BaseViewModel;
+import com.opannapo.testtiketcom.etc.Constant.ErrorType;
 import com.opannapo.testtiketcom.usecases.home.HomeUseCase;
 import com.opannapo.testtiketcom.usecases.home.HomeUseCaseImpl;
 
@@ -17,6 +18,8 @@ import java.util.List;
 public class HomeVM extends BaseViewModel<HomeUseCaseImpl> implements HomeUseCase.View {
     public MutableLiveData<Integer> liveLoadingState = new MutableLiveData<>(); //1 loading
     public MutableLiveData<List<User>> liveUsers = new MutableLiveData<>();
+    public MutableLiveData<Integer> liveErrorType = new MutableLiveData<>();
+
     private int currentPage;
     private String currentQuery;
     private boolean isProcessing;
@@ -33,6 +36,7 @@ public class HomeVM extends BaseViewModel<HomeUseCaseImpl> implements HomeUseCas
         if (isProcessing) return;
         this.currentQuery = query;
         this.currentPage = 1;
+        liveUsers.postValue(null);//notify to reset all data
         useCase.doFindUser(context, currentQuery, currentPage, 50);
     }
 
@@ -57,7 +61,8 @@ public class HomeVM extends BaseViewModel<HomeUseCaseImpl> implements HomeUseCas
     }
 
     @Override
-    public void onSearchError(int errorType) {
+    public void onSearchError(@ErrorType int errorType) {
+        liveErrorType.postValue(errorType);
         liveLoadingState.postValue(0);
         isProcessing = false;
     }
