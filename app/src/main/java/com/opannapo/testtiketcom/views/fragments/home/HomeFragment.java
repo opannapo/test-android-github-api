@@ -87,6 +87,7 @@ public class HomeFragment extends BaseFragment<HomeVM> {
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
+                if (adapter.getItemCount() == 1) return;
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
                 int visibleItemCount = layoutManager.getChildCount();
                 int totalItemCount = layoutManager.getItemCount();
@@ -121,11 +122,11 @@ public class HomeFragment extends BaseFragment<HomeVM> {
     final Observer<Integer> liveErrorType = data -> {
         Log.d("live liveErrorType " + data);
         if (data == ErrorType.EMPTY_RESULT) {
-            if (adapter.getItemCount() > 0) { //++footer loading more
-                Log.d("live liveErrorType adapter.getItemCount() > 0 " + adapter.getItemCount());
+            if (adapter.getItemCount() > 1) { //++footer loading more
+                Log.d("live liveErrorType adapter.getItemCount() > 1 " + adapter.getItemCount());
                 adapter.notifyNoMoreData();
             } else {
-                Log.d("live liveErrorType adapter.getItemCount() ! > 0 " + adapter.getItemCount());
+                Log.d("live liveErrorType adapter.getItemCount() ! > 1 " + adapter.getItemCount());
                 imgNoResult.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
             }
