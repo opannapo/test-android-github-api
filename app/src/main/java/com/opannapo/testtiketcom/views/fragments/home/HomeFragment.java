@@ -8,6 +8,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -72,6 +73,25 @@ public class HomeFragment extends BaseFragment<HomeVM> {
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                int visibleItemCount = layoutManager.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+                int pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
+                if (pastVisibleItems + visibleItemCount >= totalItemCount) {
+                    vm.loadMore(requireContext());
+                }
+            }
+        });
     }
 
     @Override
@@ -80,17 +100,8 @@ public class HomeFragment extends BaseFragment<HomeVM> {
     }
 
     final Observer<List<User>> liveUsers = data -> {
-        new Thread(() -> {
-            for (User user : data) {
-                try {
-                    Log.d("live liveUsers user " + user);
-                    requireActivity().runOnUiThread(() -> adapter.notifyAddMoreData(user, queryMatch));
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, "DUMMY_PROCESSING_THREAD").start();
+        //requireActivity().runOnUiThread(() -> adapter.notifyAddMoreData(user, queryMatch));
+        requireActivity().runOnUiThread(() -> adapter.notifyAddMoreData(data, queryMatch));
     };
 
     final Observer<Integer> liveLoadingState = data -> {

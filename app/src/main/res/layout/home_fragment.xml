@@ -56,7 +56,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/laySearch"
         app:layout_constraintVertical_bias="0.2"
-        tools:listitem="@layout/view_item_user_even" />
+        tools:listitem="@layout/view_item_user" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

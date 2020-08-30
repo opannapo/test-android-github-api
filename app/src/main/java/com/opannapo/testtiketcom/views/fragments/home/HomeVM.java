@@ -19,6 +19,7 @@ public class HomeVM extends BaseViewModel<HomeUseCaseImpl> implements HomeUseCas
     public MutableLiveData<List<User>> liveUsers = new MutableLiveData<>();
     private int currentPage;
     private String currentQuery;
+    private boolean isProcessing;
 
     @Override
     protected HomeUseCaseImpl initUseCase() {
@@ -28,30 +29,36 @@ public class HomeVM extends BaseViewModel<HomeUseCaseImpl> implements HomeUseCas
 
     @Override
     public void findUsers(Context context, String query) {
+        if (query.isEmpty()) return;
+        if (isProcessing) return;
         this.currentQuery = query;
         this.currentPage = 1;
-        useCase.doFindUser(context, currentQuery, currentPage, 20);
+        useCase.doFindUser(context, currentQuery, currentPage, 50);
     }
 
     @Override
     public void loadMore(Context context) {
+        if (isProcessing) return;
         this.currentPage++;
-        useCase.doFindUser(context, currentQuery, currentPage, 20);
+        useCase.doFindUser(context, currentQuery, currentPage, 50);
     }
 
     @Override
     public void onProcessing(String msg) {
+        isProcessing = true;
         liveLoadingState.postValue(1);
     }
 
     @Override
     public void onUsersResult(List<User> users) {
+        isProcessing = false;
         liveLoadingState.postValue(0);
         liveUsers.postValue(users);
     }
 
     @Override
     public void onSearchError(int errorType) {
-
+        liveLoadingState.postValue(0);
+        isProcessing = false;
     }
 }
