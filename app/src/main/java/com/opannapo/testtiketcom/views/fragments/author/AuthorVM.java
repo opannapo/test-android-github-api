@@ -1,7 +1,5 @@
 package com.opannapo.testtiketcom.views.fragments.author;
 
-import android.content.Context;
-
 import androidx.lifecycle.MutableLiveData;
 
 import com.opannapo.core.layer.application.domain.User;
@@ -19,21 +17,5 @@ public class AuthorVM extends BaseViewModel<AuthorUseCaseImpl> implements Author
     @Override
     protected AuthorUseCaseImpl initUseCase() {
         return new AuthorUseCaseImpl(this);
-    }
-
-    @Override
-    public void getAuthorProfile(Context context) {
-        useCase.doGetAuthorProfile(context);
-    }
-
-    @Override
-    public void onProcessing(String msg) {
-        liveLoadingState.postValue(1);
-    }
-
-    @Override
-    public void onAuthorProfileResult(User author) {
-        liveLoadingState.postValue(0);
-        liveAuthor.postValue(author);
     }
 }

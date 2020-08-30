@@ -17,15 +17,26 @@ import java.util.List;
 public class HomeVM extends BaseViewModel<HomeUseCaseImpl> implements HomeUseCase.View {
     public MutableLiveData<Integer> liveLoadingState = new MutableLiveData<>(); //1 loading
     public MutableLiveData<List<User>> liveUsers = new MutableLiveData<>();
+    private int currentPage;
+    private String currentQuery;
 
     @Override
     protected HomeUseCaseImpl initUseCase() {
         return new HomeUseCaseImpl(this);
     }
 
+
     @Override
-    public void getAllUsers(Context context) {
-        useCase.doGetAllUsers(context);
+    public void findUsers(Context context, String query) {
+        this.currentQuery = query;
+        this.currentPage = 1;
+        useCase.doFindUser(context, currentQuery, currentPage, 20);
+    }
+
+    @Override
+    public void loadMore(Context context) {
+        this.currentPage++;
+        useCase.doFindUser(context, currentQuery, currentPage, 20);
     }
 
     @Override
@@ -39,4 +50,8 @@ public class HomeVM extends BaseViewModel<HomeUseCaseImpl> implements HomeUseCas
         liveUsers.postValue(users);
     }
 
+    @Override
+    public void onSearchError(int errorType) {
+
+    }
 }

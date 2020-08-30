@@ -135,7 +135,7 @@ public class MainActivity extends BaseActivity<MainVM> {
         } else {
             txtProfileName.setText(
                     stringInject(R.string.label_toolbar_profile_name,
-                            data.getName(), data.getBio())
+                            "Author", data.getName())
             );
             progressBar.setVisibility(View.GONE);
             layContentToolbar.postDelayed(() -> layContentToolbar.setBackgroundColor(Color.parseColor("#000000")), 1000);

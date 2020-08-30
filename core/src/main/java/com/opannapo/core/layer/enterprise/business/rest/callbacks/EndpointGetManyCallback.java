@@ -1,6 +1,6 @@
 package com.opannapo.core.layer.enterprise.business.rest.callbacks;
 
-import com.google.gson.JsonObject;
+import java.util.List;
 
 /**
  * Created by napouser on 30,August,2020
@@ -8,5 +8,5 @@ import com.google.gson.JsonObject;
 public abstract class EndpointGetManyCallback<T> {
     public abstract void onProgress(String msg);
 
-    public abstract void onComplete(Boolean isSuccess, JsonObject data, String error);
+    public abstract void onComplete(Boolean isSuccess, List<T> data, String error);
 }

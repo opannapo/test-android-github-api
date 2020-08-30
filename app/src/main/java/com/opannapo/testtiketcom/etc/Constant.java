@@ -1,11 +1,11 @@
 package com.opannapo.testtiketcom.etc;
 
-import androidx.annotation.StringDef;
+import androidx.annotation.IntDef;
 
 import java.lang.annotation.Retention;
 
-import static com.opannapo.testtiketcom.etc.Constant.IntentExtraKey.OWNER_DETIAL;
-import static com.opannapo.testtiketcom.etc.Constant.IntentExtraKey.USER_DETIAL;
+import static com.opannapo.testtiketcom.etc.Constant.ErrorType.EMPTY_RESULT;
+import static com.opannapo.testtiketcom.etc.Constant.ErrorType.ERROR_LOAD;
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 /**
@@ -13,12 +13,12 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
  */
 public class Constant {
     @Retention(SOURCE)
-    @StringDef({
-            USER_DETIAL,
-            OWNER_DETIAL
+    @IntDef({
+            EMPTY_RESULT,
+            ERROR_LOAD
     })
-    public @interface IntentExtraKey {
-        String USER_DETIAL = "USER_DETIAL";
-        String OWNER_DETIAL = "OWNER_DETIAL";
+    public @interface ErrorType {
+        int EMPTY_RESULT = 1;
+        int ERROR_LOAD = 2;
     }
 }

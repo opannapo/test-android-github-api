@@ -1,53 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#EEEEEE">
 
-    <Button
-        android:id="@+id/btnCreateProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_centerInParent="true"
-        android:text="Create Profile" />
+
+    <ImageView
+        android:id="@+id/imgProfile"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp" />
 
     <LinearLayout
         android:id="@+id/layContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/imgProfile"
         android:layout_centerInParent="true"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="20dp"
+        android:visibility="gone"
+        tools:visibility="visible">
 
-        <EditText
-            android:id="@+id/edtEmail"
+        <TextView
+            android:id="@+id/txtName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:hint="email"
-            android:inputType="textEmailAddress" />
+            android:gravity="center"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            tools:text="txtName" />
 
-        <EditText
-            android:id="@+id/edtFirstName"
+        <TextView
+            android:id="@+id/txtBio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:hint="First Name" />
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            tools:text="txtBio" />
 
-        <EditText
-            android:id="@+id/edtLastName"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:hint="Last Name" />
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
-        <Button
-            android:id="@+id/btnSaveProfile"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_centerInParent="true"
-            android:text="Save Profile" />
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginRight="5dp"
+                android:backgroundTint="#000000"
+                android:src="@drawable/ic_location_on_black_24dp" />
+
+            <TextView
+                android:id="@+id/txtAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:textStyle="normal"
+                tools:text="txtAddress" />
+        </LinearLayout>
+
     </LinearLayout>
 
 </RelativeLayout>

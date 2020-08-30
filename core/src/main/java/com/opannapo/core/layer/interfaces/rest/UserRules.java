@@ -12,4 +12,6 @@ public interface UserRules<T> {
     void getAll(int page, EndpointGetManyCallback<T> callback);
 
     void getOne(int id, EndpointGetOneCallback<T> callback);
+
+    void search(String query, int page, int limit, EndpointGetManyCallback<T> callback);
 }
