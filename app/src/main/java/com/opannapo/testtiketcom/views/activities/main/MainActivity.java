@@ -102,12 +102,10 @@ public class MainActivity extends BaseActivity<MainVM> {
         vpPages.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                Log.i("ViewPager onPageScrolled, position: " + position);
             }
 
             @Override
             public void onPageSelected(int position) {
-                Log.i("ViewPager onPageSelected, position: " + position);
                 switch (position) {
                     case 0:
                         currentFragment = homeFragment;

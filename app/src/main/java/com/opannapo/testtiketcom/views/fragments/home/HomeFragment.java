@@ -73,7 +73,7 @@ public class HomeFragment extends BaseFragment<HomeVM> {
         });
 
         adapter = new UsersAdapter(requireContext(), new ArrayList<>(), (i, user) -> {
-            Toast.makeText(requireContext(), user.getName(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), user.getLogin(), Toast.LENGTH_SHORT).show();
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(adapter);
@@ -105,7 +105,6 @@ public class HomeFragment extends BaseFragment<HomeVM> {
     }
 
     final Observer<List<User>> liveUsers = data -> {
-        Log.d("live liveUsers " + data);
         imgNoResult.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
         if (data == null) {
@@ -123,13 +122,13 @@ public class HomeFragment extends BaseFragment<HomeVM> {
         Log.d("live liveErrorType " + data);
         if (data == ErrorType.EMPTY_RESULT) {
             if (adapter.getItemCount() > 1) { //++footer loading more
-                Log.d("live liveErrorType adapter.getItemCount() > 1 " + adapter.getItemCount());
                 adapter.notifyNoMoreData();
             } else {
-                Log.d("live liveErrorType adapter.getItemCount() ! > 1 " + adapter.getItemCount());
                 imgNoResult.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
             }
+        } else {
+            Toast.makeText(requireContext(), "An Error Occurred", Toast.LENGTH_SHORT).show();
         }
     };
 }

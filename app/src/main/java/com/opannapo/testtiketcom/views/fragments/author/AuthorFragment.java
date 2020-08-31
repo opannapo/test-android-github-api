@@ -23,9 +23,6 @@ import butterknife.ButterKnife;
  * Created by napouser on 30,August,2020
  */
 public class AuthorFragment extends BaseFragment<AuthorVM> {
-
-
-    MainVM sharedVm;
     @BindView(R.id.imgProfile)
     ImageView imgProfile;
     @BindView(R.id.txtName)
@@ -36,6 +33,8 @@ public class AuthorFragment extends BaseFragment<AuthorVM> {
     TextView txtAddress;
     @BindView(R.id.layContent)
     LinearLayout layContent;
+
+    MainVM sharedVm;
 
     @Override
     protected Class<AuthorVM> initVM() {
